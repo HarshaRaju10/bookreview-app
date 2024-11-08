@@ -40,4 +40,4 @@ Make sure you have **Node.js** and **npm** installed on your system.
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/Loo0per/BookReview.git
-cd book-review
+cd BookReview
