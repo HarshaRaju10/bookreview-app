@@ -6,9 +6,6 @@ import Footer from "./Footer";
 import toast, { Toaster } from "react-hot-toast";
 import { Calendar, SortDesc, SortAsc } from "lucide-react";
 
-const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
-});
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -20,7 +17,7 @@ const ReviewList = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axiosInstance.get("/reviews");
+        const response = await axios.get("/reviews");
         setReviews(response.data);
         setIsLoading(false);
       } catch (error) {
