@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/reviews': 'http://localhost:5000', // Proxy API calls
+      '/reviews': 'http://localhost:5000', 
+      '/api/auth': 'http://localhost:5000', 
     },
   },
 });

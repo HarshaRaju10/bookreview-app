@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-native-ui-components/alert": "^1.1.0",
     "@vitejs/plugin-react": "^4.3.3",
+    "@welcome-ui/alert": "^6.1.0",
+    "alert": "^6.0.2",
+    "analysis": "^0.4.2",
     "axios": "^1.7.7",
     "lucide-react": "^0.454.0",
     "react": "^18.3.1",

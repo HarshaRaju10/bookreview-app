@@ -1,37 +1,66 @@
-import express from 'express';
-import Review from '../models/Review.js';
+import express from "express";
+import Review from "../models/Review.js";
+import { verifyToken } from "../middleware/authMiddleware.js"; // Import the middleware
 
 const router = express.Router();
 
-// GET /reviews
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
+  try {
     const reviews = await Review.find();
     res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching reviews", error });
+  }
 });
 
-// GET /reviews/:id
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
+  try {
     const review = await Review.findById(req.params.id);
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
     res.json(review);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching the review", error });
+  }
 });
 
-// POST /reviews
-router.post('/', async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
+  try {
     const newReview = new Review(req.body);
     const savedReview = await newReview.save();
     res.status(201).json(savedReview);
+  } catch (error) {
+    res.status(500).json({ message: "Error adding the review", error });
+  }
 });
 
-// PUT /reviews/:id
-router.put('/:id', async (req, res) => {
-    const updatedReview = await Review.findByIdAndUpdate(req.params.id, req.body, { new: true });
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const updatedReview = await Review.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedReview) {
+      return res.status(404).json({ message: "Review not found" });
+    }
     res.json(updatedReview);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating the review", error });
+  }
 });
 
-// DELETE /reviews/:id
-router.delete('/:id', async (req, res) => {
-    await Review.findByIdAndDelete(req.params.id);
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const deletedReview = await Review.findByIdAndDelete(req.params.id);
+    if (!deletedReview) {
+      return res.status(404).json({ message: "Review not found" });
+    }
     res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting the review", error });
+  }
 });
 
 export default router;

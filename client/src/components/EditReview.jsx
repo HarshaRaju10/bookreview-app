@@ -36,8 +36,13 @@ const EditReview = () => {
   }, [id]);
 
 const handleUpdate = async (e) => {
+  const token = localStorage.getItem('token');
     e.preventDefault();
-    await axiosInstance.put(`/reviews/${id}`, { title, author, rating, reviewText })
+    await axiosInstance.put(`/reviews/${id}`, { title, author, rating, reviewText }, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+  })
         .then(response => {
             toast.success('Review Updated Successfully!');
            
@@ -49,9 +54,14 @@ const handleUpdate = async (e) => {
 };
 
 const handleDelete = async () => {
+  const token = localStorage.getItem('token');
     if (window.confirm('Are you sure you want to delete this review?')) {
         try {
-            await axiosInstance.delete(`/reviews/${id}`);
+            await axiosInstance.delete(`/reviews/${id}`, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
             toast.success('Review Deleted Successfully!');
             navigate('/');
         } catch (error) {
