@@ -1,12 +1,13 @@
 {
   "name": "bookreview",
   "version": "1.0.0",
-  "description": "Book Review Webiste",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run start\""
+    "client": "npm run dev --prefix client",
+    "server": "nodemon server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "author": "sakindu",
-  "license": "ISC"
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
 }
