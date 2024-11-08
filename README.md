@@ -8,12 +8,7 @@ A full-stack **MERN** (MongoDB, Express, React, Node.js) application that allows
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [Installation](#-installation)
-- [Environment Variables](#-environment-variables)
-- [Project Structure](#-project-structure)
-- [Available Scripts](#-available-scripts)
-- [API Endpoints](#-api-endpoints)
-- [Authentication](#-authentication)
-- [Tools Used](#-tools-used)
+
 
 ---
 
