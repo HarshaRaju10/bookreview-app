@@ -1,11 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: ECS Fargate service for backend Node.js app with ALB and MongoDB Atlas connectivity
+Description: ECS Fargate service for backend Node.js app with ALB and MongoDB Atlas
 
 Parameters:
   VpcId:
     Type: AWS::EC2::VPC::Id
   SubnetIds:
     Type: List<AWS::EC2::Subnet::Id>
+  ClusterName:
+    Type: String
+    Default: default
   EcrImageUrl:
     Type: String
   MongoUri:
@@ -45,14 +48,12 @@ Resources:
   BackendLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: /ecs/backend-log-group
       RetentionInDays: 14
 
   BackendTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      RequiresCompatibilities:
-        - FARGATE
+      RequiresCompatibilities: [FARGATE]
       Cpu: '256'
       Memory: '512'
       NetworkMode: awsvpc
@@ -78,7 +79,7 @@ Resources:
   BackendSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Allow HTTP access to backend
+      GroupDescription: Allow HTTP to backend
       VpcId: !Ref VpcId
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -101,7 +102,6 @@ Resources:
   BackendTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: backend-tg
       Port: 5000
       Protocol: HTTP
       TargetType: ip
@@ -113,18 +113,18 @@ Resources:
   BackendListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref BackendTargetGroup
       LoadBalancerArn: !Ref BackendALB
       Port: 80
       Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref BackendTargetGroup
 
   BackendService:
     Type: AWS::ECS::Service
     DependsOn: BackendListener
     Properties:
-      Cluster: default
+      Cluster: !Ref ClusterName
       LaunchType: FARGATE
       DesiredCount: 1
       TaskDefinition: !Ref BackendTaskDefinition
@@ -141,5 +141,5 @@ Resources:
 
 Outputs:
   BackendLoadBalancerDNS:
-    Description: Public DNS of the load balancer
+    Description: Public DNS of the backend ALB
     Value: !GetAtt BackendALB.DNSName
