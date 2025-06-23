@@ -38,31 +38,38 @@ jobs:
 
 
   lint:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Lint backend
-        run: |
-          cd server
-          npx eslint . || echo "Lint issues found"
+   runs-on: ubuntu-latest
+   needs: build
+   steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Lint backend
+      working-directory: ./server
+      run: npx eslint . || echo "Lint issues found"
 
   test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Run backend unit tests
-        run: |
-          cd server
-          npm test || echo "Tests failed or are not defined"
+   runs-on: ubuntu-latest
+   needs: build
+   steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run backend unit tests
+      working-directory: ./server
+      run: npm test || echo "Tests failed or are not defined"
 
   audit:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Scan for backend vulnerabilities
-        run: |
-          cd server
-          npm audit || echo "Some vulnerabilities found"
+   runs-on: ubuntu-latest
+   needs: build
+   steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Scan for backend vulnerabilities
+      working-directory: ./server
+      run: npm audit || echo "Some vulnerabilities found"
+
 
   dockerize-and-push:
     runs-on: ubuntu-latest
