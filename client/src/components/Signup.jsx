@@ -1,3 +1,4 @@
+const baseURL = window?.env?.VITE_API_URL || 'http://localhost:5000';
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +15,7 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/auth/signup", { username, email, password });
+      await axios.post(`${baseURL}/api/auth/signup`, { username, email, password });
       navigate("/login");
     } catch (err) {
       setError(err.response.data.message);
