@@ -25,3 +25,7 @@ mongoose
 
 app.use("/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
+
+app.get("/", (req, res) => {
+  res.status(200).send("Backend is healthy");
+});
