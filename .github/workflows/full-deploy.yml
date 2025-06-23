@@ -125,6 +125,7 @@ jobs:
             EcrImageUrl=${{ secrets.ECR_IMAGE_URI }}:latest \
             MongoUri='${{ secrets.MONGO_URI }}' \
             JwtSecret='${{ secrets.JWT_SECRET }}'
+            
 
  
  
