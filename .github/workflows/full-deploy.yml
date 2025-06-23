@@ -116,7 +116,7 @@ jobs:
     - name: Deploy backend stack with CloudFormation
       run: |
         aws cloudformation deploy \
-          --template-file server/cf/ecs.yml \
+          --template-file CloudFormation/ecs.yml \
           --stack-name bookreview-backend-stack \
           --capabilities CAPABILITY_NAMED_IAM \
           --parameter-overrides \
