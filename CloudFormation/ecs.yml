@@ -6,9 +6,6 @@ Parameters:
     Type: AWS::EC2::VPC::Id
   SubnetIds:
     Type: List<AWS::EC2::Subnet::Id>
-  ClusterName:
-    Type: String
-    Default: default
   EcrImageUrl:
     Type: String
   MongoUri:
@@ -17,6 +14,11 @@ Parameters:
     Type: String
 
 Resources:
+  BackendCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: bookreview-cluster
+
   BackendTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -124,7 +126,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: BackendListener
     Properties:
-      Cluster: !Ref ClusterName
+      Cluster: !Ref BackendCluster
       LaunchType: FARGATE
       DesiredCount: 1
       TaskDefinition: !Ref BackendTaskDefinition
